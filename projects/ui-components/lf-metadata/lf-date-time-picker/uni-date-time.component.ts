@@ -282,7 +282,13 @@ export class UniDateTimeComponent implements OnInit, AfterViewInit, AfterContent
             this.onCalendarOpen(instance);
           },
           onReady: (selectedDates: Date[], dateStr: string, instance: Instance) => {
+            console.log('-- flatpickr:onReady ---');
             this.addDaysContainerKeyboardHandler(selectedDates, instance);
+            const calendarContainer = instance.calendarContainer;
+            const focusableElements = calendarContainer.querySelectorAll('[tabindex="-1"]');
+            focusableElements.forEach((el) => {
+              el.setAttribute('tabindex', '0');
+            });
           },
           wrap: true,
           minDate: this.minDateTime,
@@ -339,9 +345,9 @@ export class UniDateTimeComponent implements OnInit, AfterViewInit, AfterContent
     setTimeout(() => {
       if (instance.daysContainer) {
         instance.monthElements[0].focus();
-      } else if (instance.timeContainer){
+      } else if (instance.timeContainer) {
         instance.hourElement?.focus();
-      } else{
+      } else {
         instance.input.focus();
       }
     }, 0);
@@ -422,12 +428,12 @@ export class UniDateTimeComponent implements OnInit, AfterViewInit, AfterContent
     };
 
     const monthsKeyDownHandler = function (currentDate: Date, instance: Instance, monthsKeyEvent: any) {
-      if (monthsKeyEvent.key === 'Tab' ) {
+      if (monthsKeyEvent.key === 'Tab') {
         monthsKeyEvent.preventDefault();
         if (monthsKeyEvent.shiftKey) {
           instance.input.focus();
           instance.close();
-        } else{
+        } else {
           instance.daysContainer?.focus();
         }
       } else if (monthsKeyEvent.key === 'ArrowDown' || monthsKeyEvent.key === 'ArrowRight') {

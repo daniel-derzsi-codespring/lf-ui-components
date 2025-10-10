@@ -6,7 +6,7 @@
 .lf-breadcrumbs-container .mat-button-toggle-button,
 .lf-breadcrumbs-container .mat-button-toggle,
 .lf-breadcrumbs-container {
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
 }
 
 .breadcrumb-parent {
@@ -71,7 +71,6 @@
   max-width: 125px;
 }
 
-
 ::ng-deep .breadcrumb-split-button-group.mat-button-toggle-group-appearance-standard {
   border: none;
   border-radius: 2px;
@@ -105,8 +104,15 @@
 
 ::ng-deep .breadcrumb-split-button.mat-button-toggle-appearance-standard .mat-button-toggle-focus-overlay,
 ::ng-deep .breadcrumb-split-button.mat-button-toggle-appearance-standard,
-::ng-deep .breadcrumb-split-button .mat-button-toggle-button {
+::ng-deep .breadcrumb-split-button .mat-button-toggle-button,
+::ng-deep .breadcrumb-split-button .mat-button-toggle-button button {
   height: 25px;
+}
+
+::ng-deep .breadcrumb-split-button .mat-button-toggle-button button {
+  border: unset;
+  background-color: transparent;
+  padding: 0;
 }
 
 ::ng-deep .breadcrumb-split-button.mat-button-toggle-appearance-standard {
@@ -122,6 +128,6 @@
   white-space: nowrap;
 }
 
-::ng-deep .breadcrumb-select.mat-button-toggle-appearance-standard.mat-button-toggle-checked {
-  background-color: transparent;
-}
+/* ::ng-deep .mat-button-toggle-appearance-standard.mat-button-toggle-checked {
+  background-color: transparent !important;
+} */

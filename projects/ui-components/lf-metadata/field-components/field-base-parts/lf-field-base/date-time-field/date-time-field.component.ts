@@ -83,4 +83,8 @@ export class DateTimeFieldComponent extends DateTimeBaseFieldDirective implement
     }
     return undefined;
   }
+
+  onShowDatePicker() {
+    this.showTokenTextBox;
+  }
 }

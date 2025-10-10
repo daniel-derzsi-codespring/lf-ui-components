@@ -32,10 +32,6 @@
   padding: 0;
 }
 
-mat-checkbox.lf-checkbox.full-width-checkbox {
-  width: 100%;
-}
-
 ::ng-deep .lf-checklist-field > .mdc-text-field--filled:not(.mdc-text-field--disabled) {
   background-color: white;
 }

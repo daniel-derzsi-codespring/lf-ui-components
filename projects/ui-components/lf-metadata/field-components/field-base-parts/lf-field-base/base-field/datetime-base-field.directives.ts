@@ -1,15 +1,15 @@
 // Copyright Laserfiche.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-import { Directive, OnInit } from "@angular/core";
-import { BaseFieldDirective } from "./base-field.directive";
+import { Directive, OnInit } from '@angular/core';
+import { BaseFieldDirective } from './base-field.directive';
 import {
   UniComponentConfig,
   UniComponentSettings,
   UniDateTimeComponent,
 } from '../../../../lf-date-time-picker/uni-date-time.module';
-import { ValidationRule } from "@laserfiche/lf-ui-components/internal-shared";
-import { of } from "rxjs";
+import { ValidationRule } from '@laserfiche/lf-ui-components/internal-shared';
+import { of } from 'rxjs';
 
 @Directive()
 export abstract class DateTimeBaseFieldDirective extends BaseFieldDirective implements OnInit {
@@ -70,7 +70,7 @@ export abstract class DateTimeBaseFieldDirective extends BaseFieldDirective impl
   protected getDateTimePickerDefaultDateValue(): string | undefined {
     var initialDate: string | undefined;
     if (!!this.containsToken) {
-      this.showTokenTextBox = true;
+      // this.showTokenTextBox = true;
       return (initialDate = undefined);
     } else {
       return (initialDate = this.lf_field_value);

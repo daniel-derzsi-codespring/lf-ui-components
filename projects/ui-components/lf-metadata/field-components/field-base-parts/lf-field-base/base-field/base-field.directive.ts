@@ -21,7 +21,6 @@ import { Observable, of } from 'rxjs';
 import { map, mergeMap, startWith } from 'rxjs/operators';
 import { CoreUtils } from '@laserfiche/lf-js-utils';
 
-
 /** @internal */
 @Directive()
 export abstract class BaseFieldDirective implements OnInit {
@@ -35,6 +34,7 @@ export abstract class BaseFieldDirective implements OnInit {
   @Input() dynamic_field_value_options: string[] | undefined;
 
   showTokenTextBox: boolean = false;
+  showTokenTextBox2: boolean = false;
 
   private readonly CHARACTER_COUNT = this.localizationService.getStringLaserficheObservable('CHARACTER_COUNT');
   private readonly NOT_AVAILABLE_WITH_TOKENS =
@@ -210,7 +210,6 @@ export abstract class BaseFieldDirective implements OnInit {
       return this.getValidationTextForFieldType(validationRuleName);
     }
   }
-
 
   onTokenChosen(token: string) {
     if (this.tokenTarget) {

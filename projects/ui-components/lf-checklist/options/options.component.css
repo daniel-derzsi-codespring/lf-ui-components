@@ -1,5 +1,5 @@
 .lf-checklist-option-container {
-  padding: 5px 0 5px 45px;
+  margin-left: 24px;
 }
 
 ::ng-deep .lf-checklist-option-container .lf-checkbox.mat-mdc-checkbox .mdc-label {

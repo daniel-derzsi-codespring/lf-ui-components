@@ -1,9 +1,12 @@
 .lf-checklist-item {
-  margin: 5px;
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
 .fixed-width-label {
   display: flex;
+  flex-grow: 1;
 }
 
 .fixed-size-icon-container {
@@ -26,7 +29,7 @@
 
 .lf-checklist-field {
   width: 100%;
-  height: 34px;
+  height: 30px;
 }
 
 .mat-mdc-input-element {
@@ -50,10 +53,11 @@
   max-width: calc(100% - 35px);
 }
 
-::ng-deep mat-form-field.lf-checklist-field >
-.mat-mdc-form-field-wrapper >
-.mat-form-field-flex >
-.mat-form-field-infix {
+::ng-deep
+  mat-form-field.lf-checklist-field
+  > .mat-mdc-form-field-wrapper
+  > .mat-form-field-flex
+  > .mat-form-field-infix {
   border-top: 0px;
   padding: 0px;
   width: inherit;
@@ -63,18 +67,19 @@
   display: none;
 }
 
-
-::ng-deep mat-form-field.lf-checklist-field >
-.mat-mdc-text-field-wrapper >
-.mat-mdc-form-field-flex >
-.mat-mdc-form-field-infix input{
+::ng-deep
+  mat-form-field.lf-checklist-field
+  > .mat-mdc-text-field-wrapper
+  > .mat-mdc-form-field-flex
+  > .mat-mdc-form-field-infix
+  input {
   font-size: 14px;
 }
 
 ::ng-deep .lf-checklist-item .mat-form-field-appearance-fill .mat-mdc-form-field-flex {
   align-items: center;
   border-radius: 2px;
-  border-color: #6D6D6D;
+  border-color: #6d6d6d;
   border-width: 1px;
   border-style: solid;
   box-sizing: border-box;
@@ -96,9 +101,9 @@
 }
 
 ::ng-deep .lf-checklist-item .mat-form-field-disabled .mat-mdc-form-field-flex {
-  border-color: #F3F3F3;
-  background-color: #F3F3F3;
-  color: #8A8A8A;
+  border-color: #f3f3f3;
+  background-color: #f3f3f3;
+  color: #8a8a8a;
 }
 
 ::ng-deep .lf-checklist-item .mat-focused .mat-mdc-form-field-flex {
@@ -109,15 +114,19 @@
   height: inherit;
 }
 
-::ng-deep .lf-checkbox.full-width-checkbox .mdc-label {
+/* ::ng-deep .lf-checkbox.full-width-checkbox .mdc-label {
   width: inherit;
 }
 
 ::ng-deep .lf-checkbox.mat-mdc-checkbox > .mdc-form-field {
   width: 100%;
-}
+} */
 
 ::ng-deep .lf-checklist-item .mdc-text-field,
 ::ng-deep .lf-checklist-item .mdc-text-field--filled {
   border-radius: 0px;
+}
+
+::ng-deep .mat-mdc-checkbox label {
+  cursor: default;
 }

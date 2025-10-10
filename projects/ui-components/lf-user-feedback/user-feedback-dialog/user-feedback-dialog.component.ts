@@ -65,9 +65,13 @@ export class UserFeedbackDialogComponent implements AfterViewInit, OnDestroy {
     FEEDBACK: this.localizationService.getStringLaserficheObservable('FEEDBACK'),
     CLOSE: this.localizationService.getStringLaserficheObservable('CLOSE'),
     THANK_YOU_FOR_SUBMISSION: this.localizationService.getStringLaserficheObservable('THANK_YOU_FOR_SUBMISSION'),
-    IF_YOUD_LIKE_TO_JOIN_OUR_CUSTOMER_PANEL: this.localizationService.getStringComponentsObservable(
-      'IF_YOUD_LIKE_TO_JOIN_OUR_CUSTOMER_PANEL'
-    ).pipe(map((value: string) => {return `${value} `;})),
+    IF_YOUD_LIKE_TO_JOIN_OUR_CUSTOMER_PANEL: this.localizationService
+      .getStringComponentsObservable('IF_YOUD_LIKE_TO_JOIN_OUR_CUSTOMER_PANEL')
+      .pipe(
+        map((value: string) => {
+          return `${value} `;
+        })
+      ),
     PLEASE_CLICK_HERE: this.localizationService.getStringComponentsObservable('PLEASE_CLICK_HERE'),
     SOMETHING_WENT_WRONG_PLEASE_TRY_AGAIN_LATER: this.localizationService.getStringLaserficheObservable(
       'SOMETHING_WENT_WRONG_PLEASE_TRY_AGAIN_LATER'
@@ -82,7 +86,7 @@ export class UserFeedbackDialogComponent implements AfterViewInit, OnDestroy {
     public dialogRef: MatDialogRef<UserFeedbackDialogComponent>,
     private ref: ChangeDetectorRef,
     private localizationService: AppLocalizationService
-  ) { }
+  ) {}
 
   ngAfterViewInit() {
     const elem = document.getElementById('lf-user-feedback-feedback-mode-button');
@@ -100,14 +104,14 @@ export class UserFeedbackDialogComponent implements AfterViewInit, OnDestroy {
   onClickFeedback(): void {
     this.dialogState = FeedbackDialogState.FEEDBACK;
     this.USER_FEEDBACK_TITLE = this.localizedStrings.FEEDBACK;
-    document.getElementById('feedback-suggestion-textbox')?.focus();
+    setTimeout(() => document.getElementById('feedback-suggestion-textbox')?.focus(), 100);
     this.onTextChanges();
   }
 
   onClickSuggestion(): void {
     this.dialogState = FeedbackDialogState.SUGGESTION;
     this.USER_FEEDBACK_TITLE = this.localizedStrings.SUGGESTION;
-    document.getElementById('feedback-suggestion-textbox')?.focus();
+    setTimeout(() => document.getElementById('feedback-suggestion-textbox')?.focus(), 100);
     this.onTextChanges();
   }
 

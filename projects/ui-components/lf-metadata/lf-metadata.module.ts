@@ -17,9 +17,10 @@ import { LfLoaderModule, LfModalsModule } from '@laserfiche/lf-ui-components/int
 import { FieldComponentsModule } from './field-components/field-components.module';
 import { GetFieldTypePipe } from './lf-field-adhoc-container/lf-field-add-remove/get-field-type.pipe';
 import { LfFieldViewDirective } from './lf-field-view.directive';
-import {ScrollingModule} from '@angular/cdk/scrolling';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatDialogModule } from '@angular/material/dialog';
 import { LfUniDateTimeModule } from './lf-date-time-picker/uni-date-time.module';
+import { A11yModule } from '@angular/cdk/a11y';
 
 @NgModule({
   declarations: [
@@ -28,9 +29,10 @@ import { LfUniDateTimeModule } from './lf-date-time-picker/uni-date-time.module'
     LfFieldAddRemoveComponent,
     LfFieldContainerComponent,
     GetFieldTypePipe,
-    LfFieldViewDirective
+    LfFieldViewDirective,
   ],
   imports: [
+    A11yModule,
     CommonModule,
     BrowserAnimationsModule,
     MatSelectModule,
@@ -43,23 +45,13 @@ import { LfUniDateTimeModule } from './lf-date-time-picker/uni-date-time.module'
     ScrollingModule,
     MatDialogModule,
   ],
-  bootstrap: [
-    LfFieldAdhocContainerComponent,
-    LfFieldTemplateContainerComponent,
-    LfFieldContainerComponent
-  ],
-  exports: [
-    LfFieldAdhocContainerComponent,
-    LfFieldTemplateContainerComponent,
-    LfFieldContainerComponent,
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  bootstrap: [LfFieldAdhocContainerComponent, LfFieldTemplateContainerComponent, LfFieldContainerComponent],
+  exports: [LfFieldAdhocContainerComponent, LfFieldTemplateContainerComponent, LfFieldContainerComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class LfMetadataModule {
   /** @internal */
-  constructor(
-    /** @internal */ injector: Injector
-  ) {
+  constructor(/** @internal */ injector: Injector) {
     const templateElementName: string = 'lf-field-template-container';
     if (window.customElements && !customElements.get(templateElementName)) {
       // Convert component to a custom element.

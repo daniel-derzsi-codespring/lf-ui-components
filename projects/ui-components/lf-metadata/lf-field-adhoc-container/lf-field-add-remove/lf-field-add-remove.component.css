@@ -21,21 +21,20 @@
   margin-bottom: 0;
 }
 
-.back-button-padding {
+/* .back-button-padding {
   text-align: right;
   max-height: 43px;
   border-bottom: 1px solid #ddd;
   border-top: 1px solid #ddd;
   box-sizing: border-box;
   padding: 20px;
-}
+} */
 
 .back-button-overlay {
-  position: absolute;
-}
-
-.back-button:hover {
-  background-color: #fafafa;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  border-top: 1px solid #ddd;
 }
 
 .back-button-text {
@@ -43,7 +42,7 @@
   vertical-align: middle;
   font-weight: bold;
   display: inline-block;
-  cursor: pointer;
+  /* cursor: pointer; */
   font-size: 14px;
 }
 
@@ -80,10 +79,12 @@ i.loader {
 }
 
 .adhoc-back-button-container {
-  height: 42px;
-  display: inline-block;
-  cursor: pointer;
-  vertical-align: middle;
+  height: 40px;
+  border: none;
+  background-color: unset;
+  /* display: inline-block; */
+  /* cursor: pointer; */
+  /* vertical-align: middle; */
 }
 
 .adhoc-back-button-container:hover {
@@ -91,8 +92,9 @@ i.loader {
 }
 
 .adhoc-back-button {
-  color: #767676;
-  padding: 12px 5px 12px 15px;
+  /* color: #767676; */
+  /* background-color: inherit; */
+  display: flex;
   font-size: 18px;
   font-weight: bold;
   box-sizing: content-box;
@@ -112,8 +114,8 @@ i.loader {
   border: 1px solid #ccc;
   -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
   box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
-  -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   padding-left: 28px;
   padding-right: 22px;
 }
@@ -166,7 +168,7 @@ i.loader {
 }
 
 .error-entries-text {
-  color: #AB2227;
+  color: #ab2227;
 }
 
 ::ng-deep .add-remove-container .mat-mdc-checkbox-touch-target {
@@ -186,7 +188,7 @@ i.loader {
 }
 
 ::ng-deep .add-remove-container .mat-mdc-checkbox .mdc-checkbox__background {
-    left: 0px;
+  left: 0px;
 }
 
 ::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface:has(lf-popup-modal-component) {

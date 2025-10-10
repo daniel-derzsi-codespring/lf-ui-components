@@ -21,7 +21,7 @@ Licensed under the MIT License. See LICENSE in the project root for license info
     <ng-template lfFieldView></ng-template>
   </div>
 </div>
-<div [hidden]="!showAdhocModal" class="addRemoveModal" class="adhoc-modal">
+<div [hidden]="!showAdhocModal" class="addRemoveModal" class="adhoc-modal" #adhocPanel tabindex="0">
   <div class="adhoc-modal-content">
     <lf-field-add-remove-component (clickBack)="onClickBackAsync()"></lf-field-add-remove-component>
   </div>
