@@ -262,6 +262,7 @@ export class UniDateTimeComponent implements OnInit, AfterViewInit, AfterContent
           time_24hr: this.settings.combinedDateTime && timeFormatContainsHour,
 
           allowInput: true,
+          clickOpens: false,
           allowInvalidPreload: true,
           dateFormat: this.dateTimeService.fromDisplayDateTimeFormatToFlatpickrFormat(
             this.settings.dateFormat + (this.settings.combinedDateTime ? ' ' + this.settings.timeFormat : '')
@@ -282,17 +283,14 @@ export class UniDateTimeComponent implements OnInit, AfterViewInit, AfterContent
             this.onCalendarOpen(instance);
           },
           onReady: (selectedDates: Date[], dateStr: string, instance: Instance) => {
-            console.log('-- flatpickr:onReady ---');
             this.addDaysContainerKeyboardHandler(selectedDates, instance);
-            const calendarContainer = instance.calendarContainer;
-            const focusableElements = calendarContainer.querySelectorAll('[tabindex="-1"]');
-            focusableElements.forEach((el) => {
-              el.setAttribute('tabindex', '0');
-            });
           },
           wrap: true,
           minDate: this.minDateTime,
           maxDate: this.maxDateTime,
+        });
+        this.dateDiv.nativeElement.addEventListener('mousedown', () => {
+          this.date?.open();
         });
       }
 
@@ -300,6 +298,7 @@ export class UniDateTimeComponent implements OnInit, AfterViewInit, AfterContent
         const flatpickrConfig = {
           locale: this.dateTimeService.getFlatpickrLocale(this.supportedLanguage),
           allowInput: true,
+          clickOpens: false,
           enableTime: true,
           enableSeconds: timeFormatContainsSecond,
           noCalendar: true,
@@ -319,6 +318,9 @@ export class UniDateTimeComponent implements OnInit, AfterViewInit, AfterContent
         };
 
         this.time = flatpickr(this.timedateDiv.nativeElement, flatpickrConfig);
+        this.timedateDiv.nativeElement.addEventListener('mousedown', () => {
+          this.time?.open();
+        });
       }
 
       // Update stored value

@@ -70,7 +70,7 @@ export abstract class DateTimeBaseFieldDirective extends BaseFieldDirective impl
   protected getDateTimePickerDefaultDateValue(): string | undefined {
     var initialDate: string | undefined;
     if (!!this.containsToken) {
-      // this.showTokenTextBox = true;
+      this.showTokenTextBox = true;
       return (initialDate = undefined);
     } else {
       return (initialDate = this.lf_field_value);

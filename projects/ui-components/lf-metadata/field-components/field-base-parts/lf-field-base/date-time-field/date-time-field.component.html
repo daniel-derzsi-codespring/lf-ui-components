@@ -3,7 +3,7 @@ Licensed under the MIT License. See LICENSE in the project root for license info
 
 <span class="token-picker-field-box" *ngIf="!isDynamic; else dynamic">
   <mat-form-field
-    *ngIf="showTokenTextBox2"
+    *ngIf="showTokenTextBox"
     title="{{ lf_field_info.displayName }}"
     appearance="outline"
     class="lf-field"
@@ -20,11 +20,10 @@ Licensed under the MIT License. See LICENSE in the project root for license info
   <lf-uni-date-time
     #tokenTarget
     class="lf-field"
-    *ngIf="!showTokenTextBox2"
+    *ngIf="!showTokenTextBox"
     [config]="uniDateTimeConfig"
     [settings]="uniDateTimeSettings"
     (valueChangedEventHandler)="onUniDateOrTimeChanged($event)"
-    (dateIconClickEventHandler)="onShowDatePicker()"
   >
   </lf-uni-date-time>
   <lf-token-picker-component

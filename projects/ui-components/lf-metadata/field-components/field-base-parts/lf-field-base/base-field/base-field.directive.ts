@@ -34,7 +34,6 @@ export abstract class BaseFieldDirective implements OnInit {
   @Input() dynamic_field_value_options: string[] | undefined;
 
   showTokenTextBox: boolean = false;
-  showTokenTextBox2: boolean = false;
 
   private readonly CHARACTER_COUNT = this.localizationService.getStringLaserficheObservable('CHARACTER_COUNT');
   private readonly NOT_AVAILABLE_WITH_TOKENS =
