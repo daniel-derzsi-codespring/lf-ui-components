@@ -1,0 +1,22 @@
+name: lf-ui-components-test-report
+on:
+  workflow_run:
+    workflows: ['lf-ui-components-CI']
+    types:
+      - completed
+permissions:
+  contents: read
+  actions: read
+  checks: write
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Test Report
+      uses: dorny/test-reporter@v2
+      with:
+        artifact: test-results
+        name: Jest Test Results
+        path: ./**/TESTS*.xml
+        reporter: java-junit
+        only-summary: 'true'

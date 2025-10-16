@@ -72,15 +72,12 @@ jobs:
         shell: pwsh
         run: npm run test:ci
 
-      - name: Test Report
-        uses: dorny/test-reporter@v1
-        if: always()
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
-          name: Jest Test Results
+          name: test-results
           path: ./**/TESTS*.xml
-          reporter: java-junit
-          only-summary: 'true'
-          fail-on-error: 'false'
 
       - name: 'create an empty ./dist/ui-components/cdn folder'
         run: 'mkdir -p ./dist/ui-components/cdn'
