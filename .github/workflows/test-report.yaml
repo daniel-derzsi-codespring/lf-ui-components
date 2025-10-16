@@ -1,22 +1,30 @@
+# Copyright Laserfiche.
+# Licensed under the MIT License. See LICENSE in the project root for license information.
+
 name: lf-ui-components-test-report
+
+# Runs the workflow once the main CI workflow is complete
 on:
   workflow_run:
     workflows: ['lf-ui-components-CI']
     types:
       - completed
+
+# Needs check permissions in order to write test result checks
 permissions:
   contents: read
   actions: read
   checks: write
+
 jobs:
   report:
     runs-on: ubuntu-latest
     steps:
-    - name: Test Report
-      uses: dorny/test-reporter@v2
-      with:
-        artifact: test-results
-        name: Jest Test Results
-        path: ./**/TESTS*.xml
-        reporter: java-junit
-        only-summary: 'true'
+      - name: Test Report
+        uses: dorny/test-reporter@v2
+        with:
+          artifact: test-results
+          name: Jest Test Results
+          path: ./**/TESTS*.xml
+          reporter: java-junit
+          only-summary: 'true'
