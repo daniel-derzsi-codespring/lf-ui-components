@@ -6,7 +6,7 @@ name: lf-ui-components-test-report
 # Runs the workflow once the main CI workflow is complete
 on:
   workflow_run:
-    workflows: ['lf-ui-components-CI']
+    workflows: ['main']
     types:
       - completed
 
