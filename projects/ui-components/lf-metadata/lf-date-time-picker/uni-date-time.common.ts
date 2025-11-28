@@ -114,6 +114,8 @@ export interface UniComponentConfig {
     language?: string;
     defaultDateLocale?: string;
     defaultDateLanguage?: string;
+    dateStyle?: string;
+    timeStyle?: string;
     setDisplayFormatByLocale?: boolean;
     setDisplayFormatByLocaleSeconds?: boolean;
     isDisplayOnly?: boolean;

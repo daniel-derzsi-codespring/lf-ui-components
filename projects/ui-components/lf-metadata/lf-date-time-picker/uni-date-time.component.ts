@@ -549,7 +549,10 @@ export class UniDateTimeComponent implements OnInit, AfterViewInit, AfterContent
 
     // For information only
     // Adjust 24h
-    if (this.settings.timeFormat && this.settings.timeFormat.indexOf('H') > -1) {
+    if (this.settings.timeFormat && this.settings.timeFormat.indexOf('A') > -1) {
+      this.settings.isAMPM = true;
+      this.settings.isTwentyfour = false;
+    } else {
       this.settings.isAMPM = false;
       this.settings.isTwentyfour = true;
     }
@@ -693,41 +696,37 @@ export class UniDateTimeComponent implements OnInit, AfterViewInit, AfterContent
       if (typeof v === 'string') {
         dateStr = isDate ? v : oldDateStr;
         timeStr = isDate ? oldTimeStr : v;
-      } else {
-        // format using current language
-        dateStr = isDate
-          ? this.dateTimeService.format({ dateTimeObj: v, dateFormat, language: this.config.language })
-          : oldDateStr;
-        timeStr =
-          isDate && !combinedDateTime
-            ? oldTimeStr
-            : this.dateTimeService.format({ dateTimeObj: v, timeFormat, language: this.config.language });
-      }
 
-      if (combinedDateTime) {
-        // parse using current language
-        dateTimeObj =
-          dateStr || timeStr
-            ? this.dateTimeService.parse({
-                dateTimeStr:
-                  (dateStr ? this.substituteTokens(dateStr, false) : '') +
-                  (timeStr ? ' ' + this.substituteTokens(timeStr, false) : ''),
-                dateTimeFormat: dateFormat + (timeStr ? ' ' + timeFormat : ''),
-                language: this.config.language,
-              })
-            : null;
+        if (combinedDateTime) {
+          // parse using current language
+          dateTimeObj =
+            dateStr || timeStr
+              ? this.dateTimeService.parse({
+                  dateTimeStr:
+                    (dateStr ? this.substituteTokens(dateStr, false) : '') +
+                    (timeStr ? ' ' + this.substituteTokens(timeStr, false) : ''),
+                  dateTimeFormat: dateFormat + (timeStr ? ' ' + timeFormat : ''),
+                  language: this.config.language,
+                })
+              : null;
+        } else {
+          // parse using current language
+          dateTimeObj =
+            dateStr || timeStr
+              ? this.dateTimeService.parse({
+                  dateStr: dateStr ? this.substituteTokens(dateStr, false) : '',
+                  timeStr: timeStr ? this.substituteTokens(timeStr, false) : '',
+                  dateFormat,
+                  timeFormat,
+                  language: this.config.language,
+                })
+              : null;
+        }
       } else {
-        // parse using current language
-        dateTimeObj =
-          dateStr || timeStr
-            ? this.dateTimeService.parse({
-                dateStr: dateStr ? this.substituteTokens(dateStr, false) : '',
-                timeStr: timeStr ? this.substituteTokens(timeStr, false) : '',
-                dateFormat,
-                timeFormat,
-                language: this.config.language,
-              })
-            : null;
+        // v is a Date object (from picker selection) or null
+        dateTimeObj = v;
+        dateStr = oldDateStr;
+        timeStr = oldTimeStr;
       }
 
       dateStr = dateStr ? this.substituteTokens(dateStr, true) : '';
@@ -755,13 +754,15 @@ export class UniDateTimeComponent implements OnInit, AfterViewInit, AfterContent
     } else {
       // isDate must be true
       if (typeof v === 'string') {
+        dateStr = v;
         // parse using current language
         dateTimeObj =
-          v && !this.dateTimeService.isToken(dateStr)
-            ? this.dateTimeService.parse({ dateStr: v, dateFormat, language: this.config.language })
+          dateStr && !this.dateTimeService.isToken(dateStr)
+            ? this.dateTimeService.parse({ dateStr, dateFormat, language: this.config.language })
             : null;
       } else {
         dateTimeObj = v;
+        dateStr = oldDateStr;
       }
       dateStr = dateStr ? this.substituteTokens(dateStr, true) : '';
       // format using current language
@@ -1047,12 +1048,14 @@ export class UniDateTimeComponent implements OnInit, AfterViewInit, AfterContent
   }
 
   // Set flatpickr date/time format based on locale
-  public localizeFormat(locale?: string, withSeconds?: boolean) {
+  public localizeFormat(locale?: string, withSeconds?: boolean, dateStyle?: string, timeStyle?: string) {
     locale = locale ? locale : this.config.locale;
     withSeconds = withSeconds ? withSeconds : this.config.setDisplayFormatByLocaleSeconds;
+    dateStyle = dateStyle ? dateStyle : this.config.dateStyle;
+    timeStyle = timeStyle ? timeStyle : this.config.timeStyle;
 
-    const dateFormat = this.dateTimeService.getFormatByLocale(locale, FormatType.DATE_FORMAT, withSeconds);
-    const timeFormat = this.dateTimeService.getFormatByLocale(locale, FormatType.TIME_FORMAT, withSeconds);
+    const dateFormat = this.dateTimeService.getFormatByLocale(locale, FormatType.DATE_FORMAT, withSeconds, dateStyle);
+    const timeFormat = this.dateTimeService.getFormatByLocale(locale, FormatType.TIME_FORMAT, withSeconds, timeStyle);
     // const dateTimeFormat = this.dateTimeService.getFormatByLocale(locale, FormatType.DATETIME_FORMAT, withSeconds);
 
     // ToDo?: convert from old to new
@@ -1064,10 +1067,15 @@ export class UniDateTimeComponent implements OnInit, AfterViewInit, AfterContent
     this.settings.timePlaceholder = timeFormat;
 
     // Adjust 24h
-    if (timeFormat.indexOf('H') > -1) {
+    if (timeFormat.indexOf('A') > -1) {
+      this.settings.isAMPM = true;
+      this.settings.isTwentyfour = false;
+    } else {
       this.settings.isAMPM = false;
       this.settings.isTwentyfour = true;
     }
+
+    console.log(this.settings);
 
     // Apply on existing controls // Revise
     if (this.date && this.config.isDisplayOnly) {

@@ -1,13 +1,16 @@
 // Copyright Laserfiche.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ValidatorFn } from '@angular/forms';
 import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
 import { FieldFormat } from '@laserfiche/lf-ui-components/shared';
-import { ValidationRule, ValidationUtils } from '@laserfiche/lf-ui-components/internal-shared';
+import { UniDateTimeService } from '../../../../lf-date-time-picker/uni-date-time.service';
+import { FormatType } from '../../../../lf-date-time-picker/uni-date-time.common';
+import { AppLocalizationService, ValidationRule, ValidationUtils } from '@laserfiche/lf-ui-components/internal-shared';
 import { Observable, of } from 'rxjs';
 import { DateTimeBaseFieldDirective } from '../base-field/datetime-base-field.directives';
+import { LfFieldTokenService } from '../lf-field-token.service';
 
 @Component({
   selector: 'lf-time-field-component',
@@ -20,6 +23,15 @@ import { DateTimeBaseFieldDirective } from '../base-field/datetime-base-field.di
 })
 export class TimeFieldComponent extends DateTimeBaseFieldDirective implements OnInit {
   private timeDisplayFormat: string | undefined;
+
+  constructor(
+    tokenService: LfFieldTokenService,
+    ref: ChangeDetectorRef,
+    localizationService: AppLocalizationService,
+    private uniDateTimeService: UniDateTimeService
+  ) {
+    super(tokenService, ref, localizationService);
+  }
   private TIME_FIELDS_MUST_BE_IN_THE_FORMAT_0: Observable<string> | undefined;
 
   async ngOnInit(): Promise<void> {
@@ -74,14 +86,10 @@ export class TimeFieldComponent extends DateTimeBaseFieldDirective implements On
     {
       return this.timeDisplayFormat;
     }
-    switch (this.lf_field_info?.format) {
-      case FieldFormat.ShortTime:
-        return 'hh:mm A';
-      case FieldFormat.LongTime:
-        return 'hh:mm:ss A';
-      default:
-        return 'hh:mm:ss A';
-    }
+    const locale = navigator.language;
+    const withSeconds = this.lf_field_info?.format !== FieldFormat.ShortTime;
+    const timeFormat = this.uniDateTimeService.getFormatByLocale(locale, FormatType.TIME_FORMAT, withSeconds);
+    return timeFormat;
   }
   async onTimeValueChangedAsync() {
     if (this.containsToken) {

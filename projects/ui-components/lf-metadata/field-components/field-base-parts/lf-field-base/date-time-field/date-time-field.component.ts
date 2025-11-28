@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { ValidatorFn } from '@angular/forms';
 import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
 import { ValidationRule } from '@laserfiche/lf-ui-components/internal-shared';
+import { FieldFormat } from '@laserfiche/lf-ui-components/shared';
 import { LfMetadataDatetimeUtils } from '@laserfiche/lf-js-utils';
 import { Observable, of } from 'rxjs';
 import { DateTimeBaseFieldDirective } from '../base-field/datetime-base-field.directives';
@@ -38,12 +39,25 @@ export class DateTimeFieldComponent extends DateTimeBaseFieldDirective implement
       defaultDate: defaultDateString,
       defaultTimeOfDate: defaultTimeString,
     };
+    let dateStyle: string | undefined;
+    let timeStyle: string | undefined;
+
+    if (this.lf_field_info.format === FieldFormat.LongDateTime) {
+      dateStyle = 'long';
+      timeStyle = 'long';
+    } else if (this.lf_field_info.format === FieldFormat.ShortDateTime) {
+      dateStyle = 'short';
+      timeStyle = 'short';
+    }
+
     this.uniDateTimeConfig = {
       storedValueDateFormat: this.internalDateFormat,
       storedValueTimeFormat: this.internalTimeFormat,
       storedValueDateTimeFormat: `{DATE}${dateTimeSeparator}{TIME}`,
-      language: navigator.language,
-      locale: navigator.language,
+      language: this.localizationService.currentLanguage ?? navigator.language,
+      locale: this.localizationService.currentLanguage ?? navigator.language,
+      dateStyle: dateStyle,
+      timeStyle: timeStyle,
       setDisplayFormatByLocale: true,
       silent: false, // no internal strings and no custom error messages
     };

@@ -75,8 +75,8 @@ export class UniDateTimeService {
         return displayFormat; // already converted or not convertable
       }
     }
-    const cFormats = ['YYYY', 'MMM', 'YY', 'DD', 'MM', 'hh', 'HH', 'mm', 'ss', 'A', 'D', 'M'];
-    const fFormats = ['Y', 'M', 'y', 'd', 'm', 'G', 'H', 'i', 'S', 'K', 'j', 'n'];
+    const cFormats = ['dddd', 'MMMM', 'YYYY', 'MMM', 'YY', 'DD', 'MM', 'hh', 'HH', 'mm', 'ss', 'A', 'D', 'M'];
+    const fFormats = ['l', 'F', 'Y', 'M', 'y', 'd', 'm', 'G', 'H', 'i', 'S', 'K', 'j', 'n', 'l'];
     let newFormat = displayFormat;
     for (let i = 0; i < cFormats.length; i++) {
       newFormat = newFormat.replace(new RegExp(cFormats[i], 'g'), '{' + i + '}');
@@ -603,6 +603,8 @@ export class UniDateTimeService {
       language: 'en', // * Common setting
       setDisplayFormatByLocale: false, // * Common setting
       setDisplayFormatByLocaleSeconds: true,
+      dateStyle: 'short',
+      timeStyle: 'short',
       defaultDateLocale: 'en-US',
       defaultDateLanguage: 'en',
       storedValueLanguage: 'en',
@@ -660,28 +662,47 @@ export class UniDateTimeService {
         ? parts[0] + '-' + parts[1].toUpperCase()
         : parts.length == 3
         ? parts[0] + '-' + parts[1].substring(0, 1).toUpperCase() + parts[1].substring(1) + '-' + parts[2].toUpperCase()
-        : 'hans' || parts[1] != 'hant'
+        : parts.length == 2
         ? parts[0] + '-' + parts[1].substring(0, 1).toUpperCase() + parts[1].substring(1)
         : locale;
     }
   };
 
-  public getFormatByLocale(locale: string | undefined, formatType: FormatType, withSeconds: boolean = false): string {
+  public getFormatByLocale(locale: string | undefined, formatType: FormatType, withSeconds: boolean = false, style?: string): string {
+    console.log('getFormatByLocale', locale, formatType, withSeconds, style);
     if (!locale) {
       locale = 'en-US';
     }
     locale = this.fixLocaleCase(locale);
+    console.log('fixed locale', locale);
+
     const localizedFormats = uniLocalizedFormats[locale] ? uniLocalizedFormats[locale] : uniLocalizedFormats['en-US'];
+    console.log('localizedFormats', localizedFormats);
+
+    let formatKey: 'DateFormat' | 'TimeFormat' | 'TimeFormatWithSeconds' | 'LongDateFormat' | 'LongTimeFormat' | 'LongTimeFormatWithSeconds';
+
     switch (formatType) {
       case FormatType.DATE_FORMAT:
-        return localizedFormats['DateFormat'];
+        formatKey = style === 'long' ? 'LongDateFormat' : 'DateFormat';
+        return localizedFormats[formatKey];
       case FormatType.TIME_FORMAT:
-        return withSeconds ? localizedFormats['TimeFormatWithSeconds'] : localizedFormats['TimeFormat'];
+        if (withSeconds) {
+          formatKey = style === 'long' ? 'LongTimeFormatWithSeconds' : 'TimeFormatWithSeconds';
+        } else {
+          formatKey = style === 'long' ? 'LongTimeFormat' : 'TimeFormat';
+        }
+        return localizedFormats[formatKey];
       case FormatType.DATETIME_FORMAT:
-        return withSeconds
-          ? localizedFormats['DateFormat'] + ' ' + localizedFormats['TimeFormatWithSeconds']
-          : localizedFormats['DateFormat'] + ' ' + localizedFormats['TimeFormat'];
+        const dateFmt = localizedFormats[style === 'long' ? 'LongDateFormat' : 'DateFormat'];
+        let timeFmt: string;
+        if (withSeconds) {
+          timeFmt = localizedFormats[style === 'long' ? 'LongTimeFormatWithSeconds' : 'TimeFormatWithSeconds'];
+        } else {
+          timeFmt = localizedFormats[style === 'long' ? 'LongTimeFormat' : 'TimeFormat'];
+        }
+        return dateFmt + ' ' + timeFmt;
     }
+    return ''; // Should not happen
   }
 
   public applyLocaleCorrections(language: string, locale: any) {

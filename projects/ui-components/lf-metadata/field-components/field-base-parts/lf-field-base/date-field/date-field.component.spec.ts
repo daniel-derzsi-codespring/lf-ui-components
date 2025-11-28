@@ -7,7 +7,7 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LfFieldInfo } from '../../../utils/lf-field-types';
 import { LfFieldTokenService } from '../lf-field-token.service';
 import { AppLocalizationService, ValidationRule } from '@laserfiche/lf-ui-components/internal-shared';
-import { FieldType } from '@laserfiche/lf-ui-components/shared';
+import { FieldFormat, FieldType } from '@laserfiche/lf-ui-components/shared';
 import { LfTokenPickerComponent } from '../../lf-token-picker/lf-token-picker.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
@@ -247,5 +247,72 @@ describe('DateFieldComponent', () => {
       () => { throw Error(`Timeout: value was ${value}`); }
     );
     expect(value).toEqual('DD/MM/YYYY');
+  });
+  
+  describe('DateFieldComponent Format Tests', () => {
+    let shortDateComponent: DateFieldComponent;
+    let shortDateFixture: ComponentFixture<DateFieldComponent>;
+  
+    let longDateComponent: DateFieldComponent;
+    let longDateFixture: ComponentFixture<DateFieldComponent>;
+  
+    const shortDate: LfFieldInfo = {
+      name: 'shortDateName',
+      id: 3,
+      description: 'shortDateDescription',
+      isRequired: false,
+      fieldType: FieldType.Date,
+      displayName: 'shortDateName',
+      format: FieldFormat.ShortDate,
+    };
+  
+    const longDate: LfFieldInfo = {
+      name: 'longDateName',
+      id: 4,
+      description: 'longDateDescription',
+      isRequired: false,
+      fieldType: FieldType.Date,
+      displayName: 'longDateName',
+      format: FieldFormat.LongDate,
+    };
+  
+    beforeEach(waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [DateFieldComponent, LfTokenPickerComponent],
+        imports: [
+          BrowserAnimationsModule,
+          CommonModule,
+          FormsModule,
+          MatFormFieldModule,
+          MatInputModule,
+          MatMenuModule,
+          ReactiveFormsModule,
+          LfUniDateTimeModule,
+        ],
+        providers: [LfFieldTokenService, AppLocalizationService],
+      }).compileComponents();
+    }));
+  
+    beforeEach(() => {
+      shortDateFixture = TestBed.createComponent(DateFieldComponent);
+      shortDateComponent = shortDateFixture.componentInstance;
+      shortDateComponent.lf_field_info = shortDate;
+      shortDateComponent.lf_field_form_control = new FormControl();
+      shortDateFixture.detectChanges();
+  
+      longDateFixture = TestBed.createComponent(DateFieldComponent);
+      longDateComponent = longDateFixture.componentInstance;
+      longDateComponent.lf_field_info = longDate;
+      longDateComponent.lf_field_form_control = new FormControl();
+      longDateFixture.detectChanges();
+    });
+  
+    it('should configure uniDateTimeConfig with dateStyle: short for ShortDate format', () => {
+      expect(shortDateComponent.uniDateTimeConfig.dateStyle).toEqual('short');
+    });
+  
+    it('should configure uniDateTimeConfig with dateStyle: long for LongDate format', () => {
+      expect(longDateComponent.uniDateTimeConfig.dateStyle).toEqual('long');
+    });
   });
 });

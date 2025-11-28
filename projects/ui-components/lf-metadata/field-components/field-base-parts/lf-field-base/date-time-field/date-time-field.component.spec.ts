@@ -8,7 +8,7 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LfFieldInfo } from '../../../utils/lf-field-types';
 import { LfFieldTokenService } from '../lf-field-token.service';
 import { AppLocalizationService, ValidationRule } from '@laserfiche/lf-ui-components/internal-shared';
-import { FieldType } from '@laserfiche/lf-ui-components/shared';
+import { FieldFormat, FieldType } from '@laserfiche/lf-ui-components/shared';
 import { LfTokenPickerComponent } from '../../lf-token-picker/lf-token-picker.component';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -186,10 +186,9 @@ describe('DateTimeFieldComponent', () => {
     returnedDateTimeObject.component.timeControl = new FormControl();
     returnedDateTimeObject.component.dateTimeControl = new FormControl();
     returnedDateTimeObject.component.settings = optionalDateTimeComponent.uniDateTimeSettings;
-    returnedDateTimeObject.component.settings.timeFormat= expectedTimeFormat,
-    returnedDateTimeObject.component.settings.dateFormat= expectedDateFormat,
-
-    returnedDateTimeObject.component.dateControl.setValue(invalidDateTimeValue);
+    (returnedDateTimeObject.component.settings.timeFormat = expectedTimeFormat),
+      (returnedDateTimeObject.component.settings.dateFormat = expectedDateFormat),
+      returnedDateTimeObject.component.dateControl.setValue(invalidDateTimeValue);
 
     // act
     optionalDateTimeComponent.onUniDateOrTimeChanged(returnedDateTimeObject);
@@ -251,5 +250,74 @@ describe('DateTimeFieldComponent', () => {
       }
     );
     expect(actualValue).toEqual(expectedDateTimeFormat);
+  });
+
+  describe('DateTimeFieldComponent Format Tests', () => {
+    let shortDateTimeComponent: DateTimeFieldComponent;
+    let shortDateTimeFixture: ComponentFixture<DateTimeFieldComponent>;
+
+    let longDateTimeComponent: DateTimeFieldComponent;
+    let longDateTimeFixture: ComponentFixture<DateTimeFieldComponent>;
+
+    const shortDateTime: LfFieldInfo = {
+      name: 'shortDateTimeName',
+      id: 3,
+      description: 'shortDateTimeDescription',
+      isRequired: false,
+      fieldType: FieldType.DateTime,
+      displayName: 'shortDateTimeName',
+      format: FieldFormat.ShortDateTime,
+    };
+
+    const longDateTime: LfFieldInfo = {
+      name: 'longDateTimeName',
+      id: 4,
+      description: 'longDateTimeDescription',
+      isRequired: false,
+      fieldType: FieldType.DateTime,
+      displayName: 'longDateTimeName',
+      format: FieldFormat.LongDateTime,
+    };
+
+    beforeEach(waitForAsync(async () => {
+      await TestBed.configureTestingModule({
+        declarations: [DateTimeFieldComponent, LfFieldBaseComponent, LfTokenPickerComponent],
+        imports: [
+          BrowserAnimationsModule,
+          CommonModule,
+          FormsModule,
+          MatFormFieldModule,
+          MatInputModule,
+          MatMenuModule,
+          ReactiveFormsModule,
+          LfUniDateTimeModule,
+        ],
+        providers: [LfFieldTokenService, AppLocalizationService],
+      }).compileComponents();
+    }));
+
+    beforeEach(() => {
+      shortDateTimeFixture = TestBed.createComponent(DateTimeFieldComponent);
+      shortDateTimeComponent = shortDateTimeFixture.componentInstance;
+      shortDateTimeComponent.lf_field_info = shortDateTime;
+      shortDateTimeComponent.lf_field_form_control = new FormControl();
+      shortDateTimeFixture.detectChanges();
+
+      longDateTimeFixture = TestBed.createComponent(DateTimeFieldComponent);
+      longDateTimeComponent = longDateTimeFixture.componentInstance;
+      longDateTimeComponent.lf_field_info = longDateTime;
+      longDateTimeComponent.lf_field_form_control = new FormControl();
+      longDateTimeFixture.detectChanges();
+    });
+
+    it('should configure uniDateTimeConfig with dateStyle: short and timeStyle: short for ShortDateTime format', () => {
+      expect(shortDateTimeComponent.uniDateTimeConfig.dateStyle).toEqual('short');
+      expect(shortDateTimeComponent.uniDateTimeConfig.timeStyle).toEqual('short');
+    });
+
+    it('should configure uniDateTimeConfig with dateStyle: long and timeStyle: long for LongDateTime format', () => {
+      expect(longDateTimeComponent.uniDateTimeConfig.dateStyle).toEqual('long');
+      expect(longDateTimeComponent.uniDateTimeConfig.timeStyle).toEqual('long');
+    });
   });
 });

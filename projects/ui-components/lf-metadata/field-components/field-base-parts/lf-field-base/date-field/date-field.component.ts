@@ -4,11 +4,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
 import { ValidatorFn } from '@angular/forms';
-import { LfFieldTokenService } from '../lf-field-token.service';
-import { AppLocalizationService, ValidationRule } from '@laserfiche/lf-ui-components/internal-shared';
+import { ValidationRule } from '@laserfiche/lf-ui-components/internal-shared';
 import { LfMetadataDatetimeUtils } from '@laserfiche/lf-js-utils';
 import { Observable, of } from 'rxjs';
 import { DateTimeBaseFieldDirective } from '../base-field/datetime-base-field.directives';
+import { FieldFormat } from '@laserfiche/lf-ui-components/shared';
 
 @Component({
   selector: 'lf-date-field-component',
@@ -32,11 +32,19 @@ export class DateFieldComponent extends DateTimeBaseFieldDirective implements On
       showTime: false,
       defaultDate: this.getDateTimePickerDefaultDateValue(),
     };
+    let dateStyle: string | undefined;
+    if (this.lf_field_info.format === FieldFormat.LongDate) {
+      dateStyle = 'long';
+    } else if (this.lf_field_info.format === FieldFormat.ShortDate) {
+      dateStyle = 'short';
+    }
+
     this.uniDateTimeConfig = {
       storedValueDateFormat: this.internalDateFormat,
       storedValueDateTimeFormat: '{DATE}T00:00:00',
-      language: navigator.language,
-      locale: navigator.language,
+      language: this.localizationService.currentLanguage ?? navigator.language,
+      locale: this.localizationService.currentLanguage ?? navigator.language,
+      dateStyle: dateStyle,
       setDisplayFormatByLocale: true,
       silent: false, // no internal strings and no custom error messages
     };
