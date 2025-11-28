@@ -76,7 +76,7 @@ export class UniDateTimeService {
       }
     }
     const cFormats = ['dddd', 'MMMM', 'YYYY', 'MMM', 'YY', 'DD', 'MM', 'hh', 'HH', 'mm', 'ss', 'A', 'D', 'M'];
-    const fFormats = ['l', 'F', 'Y', 'M', 'y', 'd', 'm', 'G', 'H', 'i', 'S', 'K', 'j', 'n', 'l'];
+    const fFormats = ['l', 'F', 'Y', 'M', 'y', 'd', 'm', 'G', 'H', 'i', 'S', 'K', 'j', 'n'];
     let newFormat = displayFormat;
     for (let i = 0; i < cFormats.length; i++) {
       newFormat = newFormat.replace(new RegExp(cFormats[i], 'g'), '{' + i + '}');
@@ -662,24 +662,31 @@ export class UniDateTimeService {
         ? parts[0] + '-' + parts[1].toUpperCase()
         : parts.length == 3
         ? parts[0] + '-' + parts[1].substring(0, 1).toUpperCase() + parts[1].substring(1) + '-' + parts[2].toUpperCase()
-        : parts.length == 2
+        : parts[1] != 'hans' && parts[1] != 'hant'
         ? parts[0] + '-' + parts[1].substring(0, 1).toUpperCase() + parts[1].substring(1)
         : locale;
     }
   };
 
-  public getFormatByLocale(locale: string | undefined, formatType: FormatType, withSeconds: boolean = false, style?: string): string {
-    console.log('getFormatByLocale', locale, formatType, withSeconds, style);
+  public getFormatByLocale(
+    locale: string | undefined,
+    formatType: FormatType,
+    withSeconds: boolean = false,
+    style?: string
+  ): string {
     if (!locale) {
       locale = 'en-US';
     }
     locale = this.fixLocaleCase(locale);
-    console.log('fixed locale', locale);
-
     const localizedFormats = uniLocalizedFormats[locale] ? uniLocalizedFormats[locale] : uniLocalizedFormats['en-US'];
-    console.log('localizedFormats', localizedFormats);
 
-    let formatKey: 'DateFormat' | 'TimeFormat' | 'TimeFormatWithSeconds' | 'LongDateFormat' | 'LongTimeFormat' | 'LongTimeFormatWithSeconds';
+    let formatKey:
+      | 'DateFormat'
+      | 'TimeFormat'
+      | 'TimeFormatWithSeconds'
+      | 'LongDateFormat'
+      | 'LongTimeFormat'
+      | 'LongTimeFormatWithSeconds';
 
     switch (formatType) {
       case FormatType.DATE_FORMAT:
@@ -702,7 +709,7 @@ export class UniDateTimeService {
         }
         return dateFmt + ' ' + timeFmt;
     }
-    return ''; // Should not happen
+    throw new Error('Invalid format type'); // Should not happen
   }
 
   public applyLocaleCorrections(language: string, locale: any) {

@@ -1075,8 +1075,6 @@ export class UniDateTimeComponent implements OnInit, AfterViewInit, AfterContent
       this.settings.isTwentyfour = true;
     }
 
-    console.log(this.settings);
-
     // Apply on existing controls // Revise
     if (this.date && this.config.isDisplayOnly) {
       this.dateDiv.nativeElement.flatpickr({
