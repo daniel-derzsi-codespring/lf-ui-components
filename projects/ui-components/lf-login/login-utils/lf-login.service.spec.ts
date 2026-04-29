@@ -139,6 +139,7 @@ describe('LfLoginService', () => {
     service.authorize_url_host_name = 'a.clouddev.laserfiche.com';
     const accessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjc2lkIjoiMTIzNDU2Nzg5IiwidHJpZCI6IjEifQ.hello';
     const parsedToken = service.parseAccessToken(accessToken);
+    console.log('parsed token', parsedToken);
 
     expect(parsedToken).toEqual('1');
   });

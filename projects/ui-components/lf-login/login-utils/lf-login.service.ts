@@ -275,6 +275,10 @@ export class LfLoginService {
   /** @internal */
   parseAccessToken(accessToken: string): string {
     const decodedAccessToken = JwtUtils.parseAccessToken(accessToken);
+    console.log('🚀 ~ parseAccessToken ~ decodedAccessToken:', decodedAccessToken);
+    console.log('🚀 ~ parseAccessToken ~ accessToken:', accessToken, accessToken.length);
+    console.log('🚀 ~ parseAccessToken ~ accessToken split length:', accessToken.split('.').length);
+
     const trusteeId = JwtUtils.getTrusteeIdFromLfJWT(decodedAccessToken);
     return trusteeId;
   }
