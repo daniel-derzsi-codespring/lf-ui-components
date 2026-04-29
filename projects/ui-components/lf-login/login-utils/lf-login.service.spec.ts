@@ -6,12 +6,6 @@ import { LoginState } from '@laserfiche/lf-ui-components/shared';
 import { LfLoginService } from './lf-login.service';
 import { CloudLoginProvider } from './cloud-login-provider';
 
-function createJwt(payload: Record<string, unknown>): string {
-  const header = { alg: 'ES256', typ: 'JWT' };
-  const encode = (obj: Record<string, unknown>) => btoa(JSON.stringify(obj));
-  return `${encode(header)}.${encode(payload)}.signature`;
-}
-
 describe('LfLoginService', () => {
   let service: LfLoginService;
 
@@ -135,7 +129,7 @@ describe('LfLoginService', () => {
   });
 
   it('parseAccessToken should parse data from jwt', () => {
-    const accessToken = createJwt({ csid: '123456789', trid: '1' });
+    const accessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjc2lkIjoiMTIzNDU2Nzg5IiwidHJpZCI6IjEifQ.hello';
     const parsedToken = service.parseAccessToken(accessToken);
 
     expect(parsedToken).toEqual('1');
@@ -143,7 +137,7 @@ describe('LfLoginService', () => {
 
   it('parseAccessToken should parse data from jwt with different environment/region', () => {
     service.authorize_url_host_name = 'a.clouddev.laserfiche.com';
-    const accessToken = createJwt({ csid: '1123456789', trid: '1' });
+    const accessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjc2lkIjoiMTIzNDU2Nzg5IiwidHJpZCI6IjEifQ.hello';
     const parsedToken = service.parseAccessToken(accessToken);
 
     expect(parsedToken).toEqual('1');
